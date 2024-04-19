@@ -48,8 +48,8 @@ public class CustomerController {
 
     @PatchMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @CrossOrigin
-    public void updateCustomer(@Valid @RequestBody CustomerDTO customer){
+    public void updateCustomer(
+                               @Valid @RequestBody CustomerDTO customer){
         customerService.updateCustomer(customer);
     }
 
