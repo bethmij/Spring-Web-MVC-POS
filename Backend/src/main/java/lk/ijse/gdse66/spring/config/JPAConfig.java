@@ -1,7 +1,6 @@
 package lk.ijse.gdse66.spring.config;
 
 import jakarta.persistence.EntityManagerFactory;
-import lk.ijse.gdse66.spring.repository.CustomerRepo;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,14 +17,18 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import javax.sql.DataSource;
 
 @EnableTransactionManagement
-@EnableJpaRepositories(basePackageClasses = CustomerRepo.class)
+@EnableJpaRepositories(basePackages = "lk.ijse.gdse66.spring.repository")
 @Configuration
-public class JpaConfig {
+public class JPAConfig {
 
     Environment env;
 
+    public JPAConfig(Environment env) {
+        this.env = env;
+    }
+
     @Bean
-    public DataSource dataSource(){
+    public DataSource dataSource() {
         DriverManagerDataSource dmds = new DriverManagerDataSource();
         dmds.setUrl(env.getRequiredProperty("spring.datasource.url"));
         dmds.setUsername(env.getRequiredProperty("spring.datasource.username"));

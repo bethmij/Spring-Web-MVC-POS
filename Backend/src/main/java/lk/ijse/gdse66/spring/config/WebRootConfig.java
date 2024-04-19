@@ -7,10 +7,7 @@ import org.springframework.context.annotation.PropertySource;
 
 @Configuration
 @ComponentScan(basePackages = "lk.ijse.gdse66.spring.service")
-@Import(JpaConfig.class)
+@Import(JPAConfig.class)
 @PropertySource("classpath:application.properties")
 public class WebRootConfig {
-    public WebRootConfig() {
-        System.out.println("WebRootConfig()");
-    }
 }
