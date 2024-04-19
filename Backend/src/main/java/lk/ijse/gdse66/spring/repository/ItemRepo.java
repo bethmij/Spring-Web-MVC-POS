@@ -9,8 +9,11 @@ import java.util.List;
 
 public interface ItemRepo extends JpaRepository<Item,String> {
 
+    Item findFirstByOrderByItemCodeDesc();
+
     @Query("SELECT i.itemCode FROM Item i")
     List<String> findAllIds();
+
 
 
 }
