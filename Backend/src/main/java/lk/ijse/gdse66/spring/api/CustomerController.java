@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 
@@ -19,7 +20,7 @@ public class CustomerController {
     @Autowired
     CustomerService customerService;
 
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = {"/getAll"},produces = MediaType.APPLICATION_JSON_VALUE)
     public List<CustomerDTO> getAllCustomers(){
         return customerService.getAllCustomers();
     }
@@ -30,9 +31,12 @@ public class CustomerController {
     public CustomerDTO saveCustomer(@RequestPart("id") String id,
                                     @RequestPart("name") String name,
                                     @RequestPart("address") String address,
-                                    @RequestPart("profilePic") String profilePic){
-        String base64ProfilePic = Base64.getEncoder().encodeToString(profilePic.getBytes()); //Build Base64 image
-        CustomerDTO customer = new CustomerDTO(id, name, address, base64ProfilePic);
+                                    @RequestPart("salary") String salary
+//                                    @RequestPart("profilePic") String profilePic
+    ){
+//        String base64ProfilePic = Base64.getEncoder().encodeToString(profilePic.getBytes()); //Build Base64 image
+//        CustomerDTO customer = new CustomerDTO(id, name, address, salary, base64ProfilePic);
+        CustomerDTO customer = new CustomerDTO(id, name, address, salary);
         return customerService.saveCustomer(customer);
     }
 
@@ -53,5 +57,10 @@ public class CustomerController {
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public CustomerDTO GetCustomerDetails(@PathVariable("id") String id){
         return customerService.getCustomerDetails(id);
+    }
+
+    @GetMapping(value = {"/getIds"})
+    public List<String> GetCustomerIDs(){
+        return customerService.GetCustomerIDs();
     }
 }

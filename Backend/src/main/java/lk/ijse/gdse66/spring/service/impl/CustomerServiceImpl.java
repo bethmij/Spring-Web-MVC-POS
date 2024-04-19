@@ -65,4 +65,9 @@ public class CustomerServiceImpl implements CustomerService {
         }
         customerRepo.deleteById(id);
     }
+
+    @Override
+    public List<String> GetCustomerIDs() {
+        return customerRepo.findAllIds();
+    }
 }

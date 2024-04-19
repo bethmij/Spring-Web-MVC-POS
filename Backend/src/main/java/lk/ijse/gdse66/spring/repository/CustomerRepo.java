@@ -17,18 +17,13 @@ public interface CustomerRepo extends JpaRepository<Customer,String> {
 
     Customer findFirstByOrderByIdDesc();
 
+    @Query("SELECT c.id FROM Customer c")
+    List<String> findAllIds();
+
     /* native queries (SQL) */
     @Query(value="select * from customers",nativeQuery = true)
     List<Customer> getAllCustomersWithSQL();
 
- /*   *//* JPQL queries *//*
-    @Query(value = "select c from Customer c")
-    List<Customer> getAllCustomersWithJPQL();
-
-    @Query(value="from Customer c")
-    List<Customer> getAllCustomersWithHQL();*/
-
-    /* positional parameters*/
     @Query(value = "select * from customers where name=?1 and address=?2",
             nativeQuery = true)
     List<Customer> getAllCustomersByNameAndAddress(String name, String address);
