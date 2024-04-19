@@ -1,8 +1,8 @@
 package lk.ijse.gdse66.spring.api;
 
 import jakarta.validation.Valid;
-import lk.ijse.gdse66.spring.dto.CustomerDTO;
-import lk.ijse.gdse66.spring.service.CustomerService;
+import lk.ijse.gdse66.spring.dto.ItemDTO;
+import lk.ijse.gdse66.spring.service.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -16,47 +16,43 @@ import java.util.List;
 public class ItemController {
 
     @Autowired
-    CustomerService customerService;
+    ItemService ItemService;
 
     @GetMapping(value = {"/getAll"},produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<CustomerDTO> getAllCustomers(){
-        return customerService.getAllCustomers();
+    public List<ItemDTO> getAllItems(){
+        return ItemService.getAllItems();
     }
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public CustomerDTO saveCustomer(@RequestPart("id") String id,
-                                    @RequestPart("name") String name,
-                                    @RequestPart("address") String address,
-                                    @RequestPart("salary") String salary
-//                                    @RequestPart("profilePic") String profilePic
-    ){
-//        String base64ProfilePic = Base64.getEncoder().encodeToString(profilePic.getBytes()); //Build Base64 image
-//        CustomerDTO customer = new CustomerDTO(id, name, address, salary, base64ProfilePic);
-        CustomerDTO customer = new CustomerDTO(id, name, address, salary);
-        return customerService.saveCustomer(customer);
+    public ItemDTO saveItem(@RequestPart("itemCode") String itemCode,
+                                    @RequestPart("description") String description,
+                                    @RequestPart("qtyOnHand") String qtyOnHand,
+                                    @RequestPart("unitPrice") String unitPrice){
+        ItemDTO Item = new ItemDTO(itemCode, description, qtyOnHand, unitPrice);
+        return ItemService.saveItem(Item);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{code}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteCustomer(@PathVariable("id") String id){
-        customerService.deleteCustomer(id);
+    public void deleteItem(@PathVariable("code") String code){
+        ItemService.deleteItem(code);
     }
 
     @PatchMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateCustomer(@Valid @RequestBody CustomerDTO customer){
-        customerService.updateCustomer(customer);
+    public void updateItem(@Valid @RequestBody ItemDTO Item){
+        ItemService.updateItem(Item);
     }
 
-    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public CustomerDTO GetCustomerDetails(@PathVariable("id") String id){
-        return customerService.getCustomerDetails(id);
+    @GetMapping(value = "/{code}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ItemDTO GetItemDetails(@PathVariable("code") String code){
+        return ItemService.getItemDetails(code);
     }
 
     @GetMapping(value = {"/getIds"})
-    public List<String> GetCustomerIDs(){
-        return customerService.GetCustomerIDs();
+    public List<String> GetItemIDs(){
+        return ItemService.GetItemIDs();
     }
 }
