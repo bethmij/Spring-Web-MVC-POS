@@ -9,17 +9,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "customers")
-public class CustomerEntity {
-
+public class Customer {
     @Id
     private String id;
     private String name;
     private String address;
     @Column(columnDefinition = "LONGTEXT")
     private String profilePic;
-
 }

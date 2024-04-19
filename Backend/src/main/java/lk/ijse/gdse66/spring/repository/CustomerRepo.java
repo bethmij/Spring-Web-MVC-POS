@@ -1,40 +1,40 @@
 package lk.ijse.gdse66.spring.repository;
 
-import lk.ijse.gdse66.spring.entity.CustomerEntity;
+import lk.ijse.gdse66.spring.entity.Customer;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface CustomerRepo extends JpaRepository<CustomerEntity,String> {
+public interface CustomerRepo extends JpaRepository<Customer,String> {
 
-    List<CustomerEntity> findCustomerByName(String name); //query methods
+    List<Customer> findCustomersByName(String name); //query methods
 
-    CustomerEntity searchByNameAndAddress(String name, String address);
+    Customer searchByNameAndAddress(String name, String address);
 
-    int countCustomerByAddressStartsWith(String letters);
+    int countCustomersByAddressStartsWith(String letters);
 
     /* native queries (SQL) */
-//    @Query(value="select * from CustomerEntity",nativeQuery = true)
-//    List<CustomerEntity> getAllCustomersWithSQL();
+    @Query(value="select * from customers",nativeQuery = true)
+    List<Customer> getAllCustomersWithSQL();
 
     /* JPQL queries */
-//    @Query(value = "select c from CustomerEntity c")
-//    List<CustomerEntity> getAllCustomerWithJPQL();
+    @Query(value = "select c from Customer c")
+    List<Customer> getAllCustomersWithJPQL();
 
-    @Query(value="from CustomerEntity c")
-    List<CustomerEntity> getAllCustomerWithHQL();
+    @Query(value="from Customer c")
+    List<Customer> getAllCustomersWithHQL();
 
     /* positional parameters*/
-    @Query(value = "select * from CustomerEntity where name=?1 and address=?2",
+    @Query(value = "select * from customers where name=?1 and address=?2",
             nativeQuery = true)
-    List<CustomerEntity> getAllCustomersByNameAndAddress(String name, String address);
+    List<Customer> getAllCustomersByNameAndAddress(String name, String address);
 
     /* named parameters */
-    @Query(value = "select * from CustomerEntity where name=:name and address=:address",
+    @Query(value = "select * from customers where name=:name and address=:address",
             nativeQuery = true)
-    List<CustomerEntity>
-    getAllCustomerByNameAndAddress2(@Param("name") String name,
+    List<Customer>
+    getAllCustomersByNameAndAddress2(@Param("name") String name,
                                      @Param("address") String address);
 }
