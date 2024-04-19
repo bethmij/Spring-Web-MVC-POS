@@ -64,8 +64,8 @@ btnCustomerSave.click(function (event){
                                         setCustomerCount();
                                     }
                                 },
-                                error: function (xhr) {
-                                    swal("Error", xhr.responseText, "error");
+                                error: function (resp, status, xhr) {
+                                    swal("Error", resp.message, "error");
                                 }
                             });
                         } else {
@@ -116,8 +116,8 @@ btnCustomerSave.click(function (event){
                             cusId.attr("disabled", false);
                         }
                     },
-                    error: function (xhr) {
-                        swal("Error", xhr.responseText, "error");
+                    error: function (resp, status, xhr) {
+                        swal("Error", resp.message, "error");
                     }
                 });
             }
@@ -180,8 +180,8 @@ function getAll() {
                 }
             }
         },
-        error: function (xhr){
-            swal("Error", xhr.responseText, "error");
+        error: function (resp, status, xhr) {
+            swal("Error", resp.message, "error");
         }
     })
 }
@@ -243,8 +243,8 @@ function deleteDetail() {
                             setCustomerCount();
                         }
                     },
-                    error: function (xhr) {
-                        swal("Error", xhr.responseText, "error");
+                    error: function (resp, status, xhr) {
+                        swal("Error", resp.message, "error");
                     }
                 });
                 setCusID();
@@ -260,8 +260,8 @@ export function getCustomerList(id, callback) {
         success: function (resp, status, xhr) {
             callback(resp, xhr);
         },
-        error: function (xhr) {
-            swal("Error", xhr.responseText, "error");
+        error: function (resp, status, xhr) {
+            swal("Error", resp.message, "error");
         }
     });
 }
@@ -292,8 +292,8 @@ $('#btnSearch').click(function (){
                             deleteDetail();
                         }
                     },
-                    error: function (xhr) {
-                        swal("Error", xhr.responseText, "error");
+                    error: function (resp, status, xhr) {
+                        swal("Error", resp.message, "error");
                     }
                 })
             } else {
@@ -317,8 +317,8 @@ export function getCusIDList(callback) {
                 callback(cusIDList);
             }
         },
-        error: function (xhr) {
-            swal("Error", xhr.responseText, "error");
+        error: function (resp, status, xhr) {
+            swal("Error", resp.message, "error");
         }
     });
 }

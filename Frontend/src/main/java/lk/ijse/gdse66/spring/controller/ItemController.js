@@ -45,14 +45,16 @@ btnItemSave.click(function (event){
                 getItemCodeList(function (IDList) {
 
                     if (!(IDList.includes(itemCode.val()))) {
+                        const formData = new FormData($("#itemForm")[0]);
                         $.ajax({
-                            url: "http://localhost:8000/java-pos/item",
+                            url: "http://localhost:8080/backend/api/v1/items",
                             method: "POST",
-                            contentType: "application/json",
-                            data: JSON.stringify(newItem),
+                            data: formData,
+                            processData: false,
+                            contentType: false,
                             success: function (resp, status, xhr) {
                                 if (xhr.status === 200) {
-                                    swal("Saved", resp, "success");
+                                    swal("Saved", "Item Code : "+resp.itemCode+" Saved Successfully!", "success");
                                     getAll();
                                     deleteDetail();
                                     setFeilds();
@@ -64,8 +66,8 @@ btnItemSave.click(function (event){
                                     setItemCount();
                                 }
                             },
-                            error: function (xhr, status, error) {
-                                swal("Error", xhr.responseText, "error");
+                            error: function (resp, status, xhr) {
+                                swal("Error", resp.message, "error");
                             }
                         });
                     } else {
@@ -95,13 +97,13 @@ btnItemSave.click(function (event){
                 newItem.qtyOnHand = itemQuantity.val();
 
                 $.ajax({
-                    url: "http://localhost:8000/java-pos/item",
-                    method: "PUT",
+                    url: "http://localhost:8080/backend/api/v1/items",
+                    method: "PATCH",
                     contentType: "application/json",
                     data: JSON.stringify(newItem),
                     success: function (resp, status, xhr) {
-                        if (xhr.status === 200) {
-                            swal("Updated", resp, "success");
+                        if (xhr.status === 204) {
+                            swal("Saved", "Item Code : "+itemCode.val()+" Updated Successfully!", "success");
                             getAll();
                             clearAll(event);
                             btnItemSave.text("Save ");
@@ -109,8 +111,8 @@ btnItemSave.click(function (event){
                             itemCode.attr("disabled", false);
                         }
                     },
-                    error: function (xhr) {
-                        swal("Error", xhr.responseText, "error");
+                    error: function (resp, status, xhr) {
+                        swal("Error", resp.message, "error");
                     }
                 });
             }
@@ -151,7 +153,7 @@ $('#itemGetAll').click(function (){
 
 function getAll() {
     $.ajax({
-        url: "http://localhost:8000/java-pos/item?option=GET",
+        url: "http://localhost:8080/backend/api/v1/items/getAll",
         method: "GET",
         success: function (resp, status, xhr) {
             if(xhr.status===200) {
@@ -163,15 +165,15 @@ function getAll() {
                         <td>${item.description}</td>
                         <td>${item.unitPrice}</td>
                         <td>${item.qtyOnHand}</td>
-                        <td style="width: 10%;"><img  class="delete"  src="../src/main/resources/assests/img/icons8-delete-96.png" alt="Logo" width="50%" class="opacity-75"></td>
+                        <td style="width: 10%;"><img  class="delete"  src="../src/main/resources/assets/img/icons8-delete-96.png" alt="Logo" width="50%" class="opacity-75"></td>
                 </tr>`);
                     deleteDetail();
                     setFeilds();
                 }
             }
         },
-        error: function (xhr) {
-            swal("Error", xhr.responseText, "error");
+        error: function (resp, status, xhr) {
+            swal("Error", resp.message, "error");
         }
     })
 
@@ -220,11 +222,11 @@ function deleteDetail() {
                 let code = $(deleteRow.children(':nth-child(1)')).text();
 
                 $.ajax({
-                    url: "http://localhost:8000/java-pos/item?itemCode=" + code,
+                    url: "http://localhost:8080/backend/api/v1/items/" + code,
                     method: "DELETE",
                     success: function (resp, status, xhr) {
-                        if (xhr.status === 200) {
-                            swal("Deleted", resp, "success");
+                        if (xhr.status === 204) {
+                            swal("Saved", "Item Code : "+code+" Deleted Successfully!", "success");
                             deleteRow.remove();
                             clearAll(event);
                             getItemCodeList(function (CodeList) {
@@ -233,8 +235,8 @@ function deleteDetail() {
                             setItemCount();
                         }
                     },
-                    error: function (xhr) {
-                        swal("Error", xhr.responseText, "error");
+                    error: function (resp, status, xhr) {
+                        swal("Error", resp.message, "error");
                     }
                 });
                 setItemCode();
@@ -245,15 +247,15 @@ function deleteDetail() {
 
 export function getItemList(code, callback) {
     $.ajax({
-        url: "http://localhost:8000/java-pos/item?option=SEARCH&itemCode=" + code,
+        url: "http://localhost:8080/backend/api/v1/items/" + code,
         method: "GET",
         success: function (resp, status, xhr) {
             if (xhr.status === 200) {
                 callback(resp,xhr);
             }
         },
-        error: function (xhr) {
-            swal("Error", xhr.responseText, "error");
+        error: function (resp, status, xhr) {
+            swal("Error", resp.message, "error");
         }
     });
 }
@@ -273,7 +275,7 @@ $('#itemSearch').click(function (){
                                 <td>${resp.description}</td>
                                 <td>${resp.unitPrice}</td>
                                 <td>${resp.qtyOnHand}</td>
-                                <td style="width: 10%;"><img class="delete" src="../src/main/resources/assests/img/icons8-delete-96.png" alt="Logo" width="50%" style="opacity: 100%;"></td>
+                                <td style="width: 10%;"><img class="delete" src="../src/main/resources/assets/img/icons8-delete-96.png" alt="Logo" width="50%" style="opacity: 100%;"></td>
                             </tr>`);
                         deleteDetail();
                         setFeilds();
@@ -291,7 +293,7 @@ $('#itemSearch').click(function (){
 export function getItemCodeList(callback) {
     let itemCodeList = [];
     $.ajax({
-        url: "http://localhost:8000/java-pos/item?option=ID",
+        url: "http://localhost:8080/backend/api/v1/items/getIds",
         method: "GET",
         success: function (resp, status, xhr) {
             if(xhr.status === 200) {
@@ -299,8 +301,8 @@ export function getItemCodeList(callback) {
                 callback(itemCodeList);
             }
         },
-        error: function (xhr, status, error){
-            swal("Error", xhr.responseText, "error");
+        error: function (resp, status, xhr) {
+            swal("Error", resp.message, "error");
         }
     });
 }
