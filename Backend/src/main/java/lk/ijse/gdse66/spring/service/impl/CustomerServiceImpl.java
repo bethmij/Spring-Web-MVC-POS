@@ -5,7 +5,7 @@ import lk.ijse.gdse66.spring.repository.CustomerRepo;
 import lk.ijse.gdse66.spring.service.CustomerService;
 import lk.ijse.gdse66.spring.service.exception.NotFoundException;
 import lk.ijse.gdse66.spring.service.util.Transformer;
-import lk.ijse.gdse66.spring.service.util.UtilMatter;
+import lk.ijse.gdse66.spring.service.util.GenerateID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +21,9 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Autowired
     Transformer transformer;
+
+    @Autowired
+    GenerateID generateID;
 
     @Override
     public List<CustomerDTO> getAllCustomers() {
@@ -39,7 +42,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public CustomerDTO saveCustomer(CustomerDTO customerDTO) {
-        customerDTO.setId(UtilMatter.generateId());
+        customerDTO.setId(generateID.generateId());
         return transformer.fromCustomerEntity(
                 customerRepo.save(
                         transformer.toCustomerEntity(customerDTO)));

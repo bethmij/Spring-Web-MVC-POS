@@ -15,26 +15,22 @@ public interface CustomerRepo extends JpaRepository<Customer,String> {
 
     int countCustomersByAddressStartsWith(String letters);
 
+    Customer findFirstByOrderByIdDesc();
+
     /* native queries (SQL) */
     @Query(value="select * from customers",nativeQuery = true)
     List<Customer> getAllCustomersWithSQL();
 
-    /* JPQL queries */
+ /*   *//* JPQL queries *//*
     @Query(value = "select c from Customer c")
     List<Customer> getAllCustomersWithJPQL();
 
     @Query(value="from Customer c")
-    List<Customer> getAllCustomersWithHQL();
+    List<Customer> getAllCustomersWithHQL();*/
 
     /* positional parameters*/
     @Query(value = "select * from customers where name=?1 and address=?2",
             nativeQuery = true)
     List<Customer> getAllCustomersByNameAndAddress(String name, String address);
 
-    /* named parameters */
-    @Query(value = "select * from customers where name=:name and address=:address",
-            nativeQuery = true)
-    List<Customer>
-    getAllCustomersByNameAndAddress2(@Param("name") String name,
-                                     @Param("address") String address);
 }

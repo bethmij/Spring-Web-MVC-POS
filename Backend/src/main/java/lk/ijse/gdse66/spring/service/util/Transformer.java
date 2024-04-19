@@ -1,7 +1,7 @@
 package lk.ijse.gdse66.spring.service.util;
 
 import lk.ijse.gdse66.spring.dto.CustomerDTO;
-import lk.ijse.gdse66.spring.entity.CustomerEntity;
+import lk.ijse.gdse66.spring.entity.Customer;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
@@ -14,11 +14,13 @@ public class Transformer {
         this.mapper = mapper;
     }
 
-    public CustomerDTO fromCustomerEntity(CustomerEntity customerEntity){
-        return mapper.map(customerEntity, CustomerDTO.class);
+    public CustomerDTO fromCustomerEntity(Customer customer){
+        CustomerDTO customerDTO = mapper.map(customer, CustomerDTO.class);
+        return customerDTO;
     }
 
-    public CustomerEntity toCustomerEntity(CustomerDTO customerDTO){
-        return mapper.map(customerDTO, CustomerEntity.class);
+    public Customer toCustomerEntity(CustomerDTO customerDTO){
+        Customer customer = mapper.map(customerDTO, Customer.class);
+        return customer;
     }
 }
