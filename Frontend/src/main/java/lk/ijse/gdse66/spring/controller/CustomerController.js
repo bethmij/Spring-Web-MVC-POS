@@ -104,8 +104,11 @@ btnCustomerSave.click(function (event){
                     contentType: "application/json",
                     data: JSON.stringify(newCustomer),
                     success: function (resp, status, xhr) {
+
                         if (xhr.status === 204) {
-                            swal("Updated", "Customer ID : "+resp.id+" Updated Successfully!", "success");
+                            console.log(xhr.status)
+                            console.log(resp)
+                            swal("Updated", "Customer ID : "+cusId.val()+" Saved Successfully!", "success");
                             getAll();
                             clearAll(event);
                             btnCustomerSave.text("Save ");
@@ -227,11 +230,11 @@ function deleteDetail() {
                 let cusID = $(deleteRow.children(':nth-child(1)')).text();
 
                 $.ajax({
-                    url: "http://localhost:8000/java-pos/customer?cusID=" + cusID,
+                    url: "http://localhost:8080/backend/api/v1/customers/" + cusID,
                     method: "DELETE",
                     success: function (resp, status, xhr) {
-                        if (xhr.status === 200) {
-                            swal("Deleted", resp, "success");
+                        if (xhr.status === 204) {
+                            swal("Deleted", "Customer ID : "+cusID+" Deleted Successfully!", "success");
                             deleteRow.remove();
                             clearAll(event);
                             getCusIDList(function (IDList) {
@@ -252,7 +255,7 @@ function deleteDetail() {
 
 export function getCustomerList(id, callback) {
     $.ajax({
-        url: "http://localhost:8000/java-pos/customer?option=SEARCH&cusID=" + id,
+        url: "http://localhost:8080/backend/api/v1/customers/" + id,
         method: "GET",
         success: function (resp, status, xhr) {
             callback(resp, xhr);
@@ -271,21 +274,23 @@ $('#btnSearch').click(function (){
         getCusIDList( function (IDList) {
             if (IDList.includes(id)) {
                 $.ajax({
-                    url: "http://localhost:8000/java-pos/customer?option=SEARCH&cusID=" + id,
+                    url: "http://localhost:8080/backend/api/v1/customers/" + id,
                     method: "GET",
-                    success: function (resp) {
-                        cusTBody.empty();
-                        cusTBody.append(`
+                    success: function (resp, status, xhr) {
+                        if (xhr.status === 200) {
+                            cusTBody.empty();
+                            cusTBody.append(`
                                 <tr>
-                                   <th scope="row">${resp.cusID}</th>
-                                   <td>${resp.cusName}</td>
-                                   <td>${resp.cusAddress}</td>
-                                   <td>${resp.cusSalary}</td>
-                                   <td style="width: 10%;"><img  class="delete"  src="../src/main/resources/assests/img/icons8-delete-96.png" alt="Logo" width="50%" class="opacity-75"></td>
+                                   <th scope="row">${resp.id}</th>
+                                   <td>${resp.name}</td>
+                                   <td>${resp.address}</td>
+                                   <td>${resp.salary}</td>
+                                   <td style="width: 10%;"><img  class="delete"  src="../src/main/resources/assets/img/icons8-delete-96.png" alt="Logo" width="50%" class="opacity-75"></td>
                                 </tr>`)
 
-                        setFeilds();
-                        deleteDetail();
+                            setFeilds();
+                            deleteDetail();
+                        }
                     },
                     error: function (xhr) {
                         swal("Error", xhr.responseText, "error");

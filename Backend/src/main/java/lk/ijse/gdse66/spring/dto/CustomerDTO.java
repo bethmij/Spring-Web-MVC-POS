@@ -13,7 +13,9 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CustomerDTO implements Serializable {
-    @Null(message = "id is auto generated")
+
+    @NotBlank(message = "id can not be null")
+    @Pattern(regexp = "C00-[0-9]{3}", message = "id is not valid")
     private String id;
     @NotBlank(message = "name can not be null")
     @Pattern(regexp = "[A-Za-z ]+", message = "name is not valid")

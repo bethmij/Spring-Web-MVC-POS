@@ -15,12 +15,10 @@ public class Transformer {
     }
 
     public CustomerDTO fromCustomerEntity(Customer customer){
-        CustomerDTO customerDTO = mapper.map(customer, CustomerDTO.class);
-        return customerDTO;
+        return mapper.map(customer, CustomerDTO.class);
     }
 
     public Customer toCustomerEntity(CustomerDTO customerDTO){
-        Customer customer = mapper.map(customerDTO, Customer.class);
-        return customer;
+        return mapper.map(customerDTO, Customer.class);
     }
 }
