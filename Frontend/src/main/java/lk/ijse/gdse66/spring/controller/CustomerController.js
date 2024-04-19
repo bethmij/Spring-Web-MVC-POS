@@ -17,7 +17,6 @@ $(document).on('keydown', function(event) {
 });
 
 getAll();
-Swal.fire("Hello, SweetAlert!");
 btnCustomerSave.click(function (event){
     let newCustomer = Object.assign({}, customer);
     newCustomer.cusID = cusId.val();
@@ -28,33 +27,32 @@ btnCustomerSave.click(function (event){
     if(btnCustomerSave.text()==="Save ") {
         event.preventDefault();
 
-        Swal.fire({
-            title: "Do you want to save the customer?",
-            icon: "question",
-            showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "OK"
-
+        swal("Do you want to save the customer?", {
+            buttons: {
+                cancel1: {
+                    text: "Cancel",
+                    className: "custom-cancel-btn",
+                },
+                ok: {
+                    text: "OK",
+                    value: "catch",
+                    className: "custom-ok-btn",
+                }
+            },
         }).then((value) => {
-                if (value === "catch" ) {
+            if (value === "catch" ) {
                     getCusIDList( function (IDList) {
                         if (!(IDList.includes(cusId.val()))) {
                             const formData = new FormData($("#cusForm")[0]);
                             $.ajax({
-
                                 url: "http://localhost:8080/backend/api/v1/customers",
                                 method: "POST",
                                 data: formData,
                                 processData: false,
                                 contentType: false,
                                 success: function (resp, status, xhr) {
-                                    if (xhr.status === 200) {
-                                        Swal.fire({
-                                            title: "Saved",
-                                            text: "Customer Saved Successfully!",
-                                            icon: "success"
-                                        });
+                                    if (xhr.status === 201) {
+                                        swal("Saved", "Customer ID : "+resp.id+" Saved Successfully!", "success");
                                         getAll();
                                         deleteDetail();
                                         setFeilds();
@@ -95,19 +93,19 @@ btnCustomerSave.click(function (event){
             if (value === "catch") {
 
                 let newCustomer = Object.assign({}, customer);
-                newCustomer.cusID = cusId.val();
-                newCustomer.cusName = cusName.val();
-                newCustomer.cusAddress = cusAddress.val();
-                newCustomer.cusSalary = cusSalary.val();
+                newCustomer.id = cusId.val();
+                newCustomer.name = cusName.val();
+                newCustomer.address = cusAddress.val();
+                newCustomer.salary = cusSalary.val();
 
                 $.ajax({
-                    url: "http://localhost:8000/java-pos/customer",
+                    url: "http://localhost:8080/backend/api/v1/customers",
                     method: "PUT",
                     contentType: "application/json",
                     data: JSON.stringify(newCustomer),
                     success: function (resp, status, xhr) {
-                        if (xhr.status === 200) {
-                            swal("Updated", resp, "success");
+                        if (xhr.status === 204) {
+                            swal("Updated", "Customer ID : "+resp.id+" Updated Successfully!", "success");
                             getAll();
                             clearAll(event);
                             btnCustomerSave.text("Save ");

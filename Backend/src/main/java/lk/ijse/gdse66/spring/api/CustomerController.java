@@ -46,11 +46,10 @@ public class CustomerController {
         customerService.deleteCustomer(id);
     }
 
-    @PatchMapping(value = "/{id}",consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PatchMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateCustomer(@PathVariable("id") String id,
-                               @Valid @RequestBody CustomerDTO customer){
-        customer.setId(id);
+    @CrossOrigin
+    public void updateCustomer(@Valid @RequestBody CustomerDTO customer){
         customerService.updateCustomer(customer);
     }
 
