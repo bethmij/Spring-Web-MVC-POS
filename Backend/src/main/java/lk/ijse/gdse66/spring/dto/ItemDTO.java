@@ -25,7 +25,7 @@ public class ItemDTO implements Serializable {
     private String qtyOnHand;
 
     @NotBlank(message = "unitPrice can not be null")
-    @Pattern(regexp = "[0-9]{0,2}", message = "unit price id is not valid")
+    @Pattern(regexp = "\\d+", message = "unit price id is not valid")
     private String unitPrice;
 
 
