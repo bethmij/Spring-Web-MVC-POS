@@ -1,7 +1,9 @@
 package lk.ijse.gdse66.spring.service.impl;
 
+import lk.ijse.gdse66.spring.dto.CustomerDTO;
 import lk.ijse.gdse66.spring.dto.ItemDTO;
 import lk.ijse.gdse66.spring.repository.ItemRepo;
+import lk.ijse.gdse66.spring.service.CustomerService;
 import lk.ijse.gdse66.spring.service.ItemService;
 import lk.ijse.gdse66.spring.service.exception.NotFoundException;
 import lk.ijse.gdse66.spring.service.util.GenerateID;
@@ -27,47 +29,47 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public List<ItemDTO> getAllItems() {
-        return ItemRepo.findAll().stream()
-                .map(Item -> transformer.fromItemEntity(Item))
+        return itemRepo.findAll().stream()
+                .map(item -> transformer.fromItemEntity(item))
                 .toList();
     }
 
     @Override
     public ItemDTO getItemDetails(String id) {
-        if(!ItemRepo.existsById(id)){
+        if(!itemRepo.existsById(id)){
             throw new NotFoundException("Item Id: " + id + " does not exist");
         }
-        return transformer.fromItemEntity(ItemRepo.findById(id).get());
+        return transformer.fromItemEntity(itemRepo.findById(id).get());
     }
 
     @Override
-    public ItemDTO saveItem(ItemDTO ItemDTO) {
-        ItemDTO.setItemCode(generateID.generateCusId());
+    public ItemDTO saveItem(ItemDTO itemDTO) {
+        itemDTO.setItemCode(generateID.generateItemCode());
         return transformer.fromItemEntity(
-                ItemRepo.save(
-                        transformer.toItemEntity(ItemDTO)));
+                itemRepo.save(
+                        transformer.toItemEntity(itemDTO)));
     }
 
     @Override
-    public void updateItem(ItemDTO ItemDTO) {
-        if(!ItemRepo.existsById(ItemDTO.getItemCode())){
-            throw new NotFoundException("Update Failed; Item id: " +
-                    ItemDTO.getItemCode() + " does not exist");
+    public void updateItem(ItemDTO itemDTO) {
+        if(!itemRepo.existsById(itemDTO.getItemCode())){
+            throw new NotFoundException("Update Failed; item id: " +
+                    itemDTO.getItemCode() + " does not exist");
         }
-        ItemRepo.save(transformer.toItemEntity(ItemDTO));
+        itemRepo.save(transformer.toItemEntity(itemDTO));
     }
 
     @Override
     public void deleteItem(String id) {
-        if(!ItemRepo.existsById(id)){
-            throw new NotFoundException("Delete Failed; Item id: " +
+        if(!itemRepo.existsById(id)){
+            throw new NotFoundException("Delete Failed; item id: " +
                     id + " does not exist");
         }
-        ItemRepo.deleteById(id);
+        itemRepo.deleteById(id);
     }
 
     @Override
     public List<String> GetItemIDs() {
-        return ItemRepo.findAllIds();
+        return itemRepo.findAllIds();
     }
 }
