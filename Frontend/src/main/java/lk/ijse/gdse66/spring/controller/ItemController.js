@@ -53,7 +53,7 @@ btnItemSave.click(function (event){
                             processData: false,
                             contentType: false,
                             success: function (resp, status, xhr) {
-                                if (xhr.status === 200) {
+                                if (xhr.status === 201) {
                                     swal("Saved", "Item Code : "+resp.itemCode+" Saved Successfully!", "success");
                                     getAll();
                                     deleteDetail();
@@ -103,7 +103,7 @@ btnItemSave.click(function (event){
                     data: JSON.stringify(newItem),
                     success: function (resp, status, xhr) {
                         if (xhr.status === 204) {
-                            swal("Saved", "Item Code : "+itemCode.val()+" Updated Successfully!", "success");
+                            swal("Updated", "Item Code : "+itemCode.val()+" Updated Successfully!", "success");
                             getAll();
                             clearAll(event);
                             btnItemSave.text("Save ");
@@ -226,7 +226,7 @@ function deleteDetail() {
                     method: "DELETE",
                     success: function (resp, status, xhr) {
                         if (xhr.status === 204) {
-                            swal("Saved", "Item Code : "+code+" Deleted Successfully!", "success");
+                            swal("Deleted", "Item Code : "+code+" Deleted Successfully!", "success");
                             deleteRow.remove();
                             clearAll(event);
                             getItemCodeList(function (CodeList) {
