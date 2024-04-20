@@ -12,7 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "items")
+@Table(name = "item")
 public class Item {
     @Id
     @Column(name = "item_code")
@@ -26,7 +26,7 @@ public class Item {
     @Column(name = "unit_price")
     private double unitPrice;
 
-    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY,mappedBy = "items")
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY,mappedBy = "item")
     private List<OrderDetails> orderDetails = new ArrayList<>();
 
     public Item(String itemCode, String description, int qtyOnHand, double unitPrice) {
