@@ -2,6 +2,7 @@ package lk.ijse.gdse66.spring.service.util;
 
 import lk.ijse.gdse66.spring.repository.CustomerRepo;
 import lk.ijse.gdse66.spring.repository.ItemRepo;
+import lk.ijse.gdse66.spring.repository.OrderRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -12,6 +13,9 @@ public class GenerateID {
 
     @Autowired
     ItemRepo itemRepo;
+
+    @Autowired
+    OrderRepo orderRepo;
 
     public  String generateCusId() {
 
@@ -35,6 +39,18 @@ public class GenerateID {
 
         } catch (NullPointerException e) {
             return "I00-001";
+        }
+    }
+
+    public  String generateOrderID() {
+
+        try {
+            String last_id =  orderRepo.findFirstByOrderByOrderIdDesc().getOrderId();
+            int latest_id = Integer.parseInt(last_id.split("OR00-")[1])+1;
+            return "OR00-"+String.format("%03d",latest_id);
+
+        } catch (NullPointerException e) {
+            return "OR00-001";
         }
 
     }
